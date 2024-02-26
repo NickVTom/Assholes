@@ -37,26 +37,30 @@ def create_pie(file_path, categories_column, values_column, title=''):
     plt.title(title)
     plt.show()
     
-def create_bar(file_path):
+
+def create_bar_chart(file_path, category_column, value_column, title=''):
+    """
+    Create and display a bar chart from Excel data.
+    """
     import pandas as pd
-    from matplotlib import pyplot
-    # Load the data from an Excel file
-    wb = pd.read_excel(file_path)
+    import matplotlib.pyplot as plt
+    """""
+    Parameters:
+    - file_path: str, path to the Excel file.
+    - category_column: str, name of the column containing category labels.
+    - value_column: str, name of the column containing the values for each category.
+    - title: str, title of the bar chart.
+    """
+    # Load the dataset
+    data = pd.read_excel(file_path)
     
-    # Count the occurrences of each 'Status'
-    status_counts = wb.groupby('Status')['Status'].count()
-    
-    # Get the unique statuses and their counts
-    statuses = status_counts.index.tolist()
-    counts = status_counts.values.tolist()
-    
-    # Create the bar chart
-    fig, ax = plt.subplots()
-    ax.bar(statuses, counts)
-    
-    # Adding labels and title (optional)
-    ax.set_xlabel('Status')
-    ax.set_ylabel('Counts')
-    ax.set_title('Counts by Status')
+    # Plotting the bar chart
+    plt.figure(figsize=(10, 6))
+    plt.bar(data[category_column], data[value_column], color='skyblue')
+    plt.xlabel(category_column)
+    plt.ylabel(value_column)
+    plt.title(title)
+    plt.xticks(rotation=45)  # Rotate category labels for better readability
+    plt.tight_layout()  # Adjust layout to not cut off labels
     plt.show()
 

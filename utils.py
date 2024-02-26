@@ -11,12 +11,12 @@ def read_excel(file_path):
     import pandas as pd
     return pd.read_excel(file_path)
 
-def create_pie(file_path, categories_column, values_column, title=''):
+def create_pie(file_path):
 
    fig=plt.figure()
    ax = fig.add_axes([0,0,1,1])
    ax.axis('equal')
-   wb=pd.read_csv('Book1.csv')
+   wb=pd.read_excel(file_path)
    a = wb.groupby('Status').Status.count()
    b = wb.Status.unique()
    ax.pie(a, labels=b, autopct='%1.1f%%')

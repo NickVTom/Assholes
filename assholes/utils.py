@@ -144,19 +144,10 @@ def create_scatterplot(file_path, x_column, y_column, title='', xlabel='', ylabe
 
 
     #Statistics CALCLULATION
+
 def cal_statistics(file_path, column):
-    import pandas as pd
     from scipy import stats
-    """
-    Calculate and return the mode, mean, and median for a specified column in an Excel file.
-
-    Parameters:
-    - file_path: str, path to the Excel file.
-    - column: str, name of the column to calculate statistics for.
-
-    Returns:
-    - A dictionary containing the mode, mean, and median of the specified column.
-    """
+    import pandas as pd
     # Load the dataset
     data = pd.read_excel(file_path)
     
@@ -164,21 +155,21 @@ def cal_statistics(file_path, column):
     if column not in data.columns:
         raise ValueError(f"Column '{column}' not found in the Excel file.")
     
-    # Calculate statistics
-    mode_result = stats.mode(data[column])[0][0]  # Using scipy.stats.mode to handle multi-modal data
+    # Calculate mode
+    mode_result = stats.mode(data[column])
+    mode_value = mode_result.mode[0] if mode_result.count[0] > 0 else None
+    
+    # Calculate mean and median
     mean_result = data[column].mean()
     median_result = data[column].median()
     
     # Return the results in a dictionary
     return {
-        "mode": mode_result,
+        "mode": mode_value,
         "mean": mean_result,
         "median": median_result
     }
 
-    print("Mode",mode_result)
-    print("Mean",mean_result)
-    print("Median",median_result)
     
 
    #VARIANCE AND STANDARD DEVIATION

@@ -1,5 +1,5 @@
 # Contents of assholes/__init__.py
 
-from .utils import read_excel, create_pie, create_bar
+from .utils import read_excel, create_pie, create_bar, create_histogram
 
 # You can also import other functions you define

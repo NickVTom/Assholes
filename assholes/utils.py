@@ -37,6 +37,7 @@ def create_pie(file_path, categories_column, values_column, title=''):
     plt.title(title)
     plt.show()
     
+    #BARCHART
 
 def create_bar(file_path, category_column, value_column, title=''):
     """
@@ -64,3 +65,31 @@ def create_bar(file_path, category_column, value_column, title=''):
     plt.tight_layout()  # Adjust layout to not cut off labels
     plt.show()
 
+    #HISTOGRAM
+    import pandas as pd
+import matplotlib.pyplot as plt
+
+def create_histogram(file_path, x_data, y_data   bins=10, title=''):
+    """
+    Create and display a histogram from Excel data.
+    """
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    """""
+    Parameters:
+    - file_path: str, path to the Excel file.
+    - data_column: str, name of the column containing the numeric data for the histogram.
+    - bins: int, number of bins for the histogram.
+    - title: str, title of the histogram.
+    """
+    # Load the dataset
+    data = pd.read_excel(file_path)
+    
+    # Plotting the histogram
+    plt.figure(figsize=(10, 6))
+    plt.hist(data[x_data], data[y_data] bins=bins, color='skyblue', edgecolor='black')
+    plt.xlabel(x_data)
+    plt.ylabel(y_data)
+    plt.title(title)
+    plt.tight_layout()  # Adjust layout to not cut off labels
+    plt.show()

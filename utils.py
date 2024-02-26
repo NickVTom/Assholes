@@ -27,7 +27,7 @@ def create_pie(file_path):
 
 #barchart
    
-def create_bar(filepath):
+def create_bar(file_path):
    fig=plt.figure()
    ax = fig.add_axes([0,0,1,1])
    ax.axis('equal')

@@ -46,5 +46,4 @@ def create_bar(file_path):
     ax.set_xlabel('Status')
     ax.set_ylabel('Counts')
     ax.set_title('Counts by Status')
-    
     plt.show()

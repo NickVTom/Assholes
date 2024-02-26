@@ -12,7 +12,7 @@ setup(
         'pandas',
         'matplotlib',
         'statsmodels',
-        'matplotlib.pyplot'
+        'matplotlib'
         'scipy'
         'numpy'
         'sympy'

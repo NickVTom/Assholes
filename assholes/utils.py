@@ -146,8 +146,8 @@ def create_scatterplot(file_path, x_column, y_column, title='', xlabel='', ylabe
     #Statistics CALCLULATION
 
 def cal_statistics(file_path, column):
-    from scipy import stats
     import pandas as pd
+
     # Load the dataset
     data = pd.read_excel(file_path)
     
@@ -155,19 +155,22 @@ def cal_statistics(file_path, column):
     if column not in data.columns:
         raise ValueError(f"Column '{column}' not found in the Excel file.")
     
-    # Calculate mode
-    mode_result = stats.mode(data[column])
-    mode_value = mode_result.mode[0] if mode_result.count[0] > 0 else None
+    # Calculating the mean of the specified column
+    mean = data[column].mean()
     
-    # Calculate mean and median
-    mean_result = data[column].mean()
-    median_result = data[column].median()
+    # Calculating the median of the specified column
+    median = data[column].median()
+    
+    # Calculating the mode of the specified column
+    # The mode() method returns a Series, so we use .iloc[0] to get the first mode value if exists
+    mode_series = data[column].mode()
+    mode = mode_series.iloc[0] if not mode_series.empty else None
     
     # Return the results in a dictionary
     return {
-        "mode": mode_value,
-        "mean": mean_result,
-        "median": median_result
+        "mean": mean,
+        "median": median,
+        "mode": mode
     }
 
     

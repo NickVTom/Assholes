@@ -38,7 +38,7 @@ def create_pie(file_path, categories_column, values_column, title=''):
     plt.show()
     
 
-def create_bar_chart(file_path, category_column, value_column, title=''):
+def create_bar(file_path, category_column, value_column, title=''):
     """
     Create and display a bar chart from Excel data.
     """

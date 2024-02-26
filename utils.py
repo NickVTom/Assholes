@@ -1,3 +1,4 @@
+#read EXCEL
 def read_excel(file_path):
     """
     Load data from an Excel file into a pandas DataFrame.
@@ -11,6 +12,8 @@ def read_excel(file_path):
     import pandas as pd
     return pd.read_excel(file_path)
 
+#piechart
+
 def create_pie(file_path):
 
    fig=plt.figure()
@@ -22,3 +25,14 @@ def create_pie(file_path):
    ax.pie(a, labels=b, autopct='%1.1f%%')
    plt.show()
 
+#barchart
+   
+def create_bar(filepath)
+   fig=plt.figure()
+   ax = fig.add_axes([0,0,1,1])
+   ax.axis('equal')
+   wb=pd.read_excel(file_path)
+   a = wb.groupby('Status').Status.count()
+   b = wb.Status.unique()
+   ax.bar(a, labels=b, autopct='%1.1f%%')
+   plt.show()

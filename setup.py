@@ -12,11 +12,11 @@ setup(
         'pandas',
         'matplotlib',
         'statsmodels',
-        'matplotlib'
-        'scipy'
-        'numpy'
-        'sympy'
-        'statistics'
+        'matplotlib',
+        'scipy',
+        'numpy',
+        'sympy',
+        'statistics',
         # Add other dependencies here
     ],
 )

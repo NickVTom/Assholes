@@ -38,6 +38,8 @@ def create_pie(file_path, categories_column, values_column, title=''):
     plt.show()
     
 def create_bar(file_path):
+    import pandas as pd
+    from matplotlib import pyplot
     # Load the data from an Excel file
     wb = pd.read_excel(file_path)
     

@@ -94,6 +94,8 @@ def create_histogram(file_path, data_column, bins=10, title=''):
 
    #CURVEDIAGRAM
 def create_curvediagram(file_path, category_column, title=''):
+    import pandas as pd
+    import matplotlib.pyplot as plt
     """
     Create and display a pie chart from Excel data.
 

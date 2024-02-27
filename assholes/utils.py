@@ -297,4 +297,44 @@ def cal_statistics_relationship(file_path, column_x, column_y):
         "trend_line_equation": trend_line_eq
     }
 
+def create_histogram_with_statistics(file_path, data_column, bins=10, title='', show_stats=True):
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import numpy as np
+    """
+    Create and display a histogram from Excel data and optionally plot mode, mean, and median.
+
+    Parameters:
+    - file_path: str, path to the Excel file.
+    - data_column: str, name of the column containing the numeric data for the histogram.
+    - bins: int, number of bins for the histogram.
+    - title: str, title of the histogram.
+    - show_stats: bool, whether to show mode, mean, and median on the histogram.
+    """
+    # Load the dataset
+    data = pd.read_excel(file_path)
+    
+    # Plotting the histogram
+    plt.figure(figsize=(10, 6))
+    plt.hist(data[data_column].dropna(), bins=bins, color='skyblue', edgecolor='black', alpha=0.7)
+    
+    if show_stats:
+        # Calculate statistics
+        stats_results = cal_statistics(file_path, data_column)
+        mean = stats_results['mean']
+        median = stats_results['median']
+        mode = stats_results['mode']
+        
+        # Plotting the mean, median, mode
+        plt.axvline(mean, color='red', linestyle='dashed', linewidth=1, label=f'Mean: {mean:.2f}')
+        plt.axvline(median, color='green', linestyle='dashed', linewidth=1, label=f'Median: {median:.2f}')
+        if mode is not None and not np.isnan(mode):  # Check if mode is valid
+            plt.axvline(mode, color='blue', linestyle='dashed', linewidth=1, label=f'Mode: {mode:.2f}')
+    
+    plt.title(title)
+    plt.xlabel(data_column)
+    plt.ylabel('Frequency')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
 

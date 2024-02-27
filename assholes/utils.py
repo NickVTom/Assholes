@@ -72,7 +72,7 @@ def create_histogram(file_path, data_column, xlabel, ylabel, title=''):
     import matplotlib.pyplot as plt
 
     # Select a column to create the histogram
-    data = data[file_path]
+    data = read_excel(file_path)
 
     # Plot the histogram
     plt.hist(data, bins=20, edgecolor='black')

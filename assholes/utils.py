@@ -67,23 +67,33 @@ def create_bar(file_path, category_column, value_column, title=''):
 
     #HISTOGRAM
 
-def create_histogram(file_path, data_column, xlabel, ylabel, title=''):
+def create_histogram(file_path, column, bins=10, title=''):
     import pandas as pd
     import matplotlib.pyplot as plt
+    """
+    Create and display a histogram from a specified column in an Excel file.
 
-    # Select a column to create the histogram
-    data = read_excel(file_path)
-
-    # Plot the histogram
-    plt.hist(data, bins=20, edgecolor='black')
-
-    # Add labels and title
-    plt.xlabel(data_column)
-    plt.ylabel(ylabel)
+    Parameters:
+    - file_path: str, path to the Excel file.
+    - column: str, name of the column to create the histogram for.
+    - bins: int, number of bins for the histogram.
+    - title: str, optional title for the histogram.
+    """
+    # Load the dataset
+    data = pd.read_excel(file_path)
+    
+    # Ensure the column exists
+    if column not in data.columns:
+        raise ValueError(f"Column '{column}' not found in the Excel file.")
+    
+    # Plotting the histogram
+    plt.figure(figsize=(10, 6))
+    plt.hist(data[column].dropna(), bins=bins, color='skyblue', edgecolor='black')
     plt.title(title)
-
-    # Show the plot
+    plt.xlabel(column)
+    plt.ylabel('Frequency')
     plt.show()
+
 
    #CURVEDIAGRAM
 def create_curvediagram(file_path, category_column, title=''):

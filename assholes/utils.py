@@ -96,28 +96,31 @@ def create_histogram(file_path, column, bins=10, title=''):
 
 
    #CURVEDIAGRAM
-def create_curvediagram(file_path, category_column, title=''):
+def create_curvediagram(file_path, x_column, y_column, title='', xlabel='', ylabel=''):
     import pandas as pd
     import matplotlib.pyplot as plt
     """
-    Create and display a pie chart from Excel data.
+    Create and display a curve diagram (line plot) from Excel data.
 
     Parameters:
     - file_path: str, path to the Excel file.
-    - category_column: str, name of the column containing category labels.
-    - title: str, title of the pie chart.
+    - x_column: str, name of the column to use for x-axis values.
+    - y_column: str, name of the column to use for y-axis values.
+    - title: str, title of the curve diagram.
+    - xlabel: str, label for the x-axis.
+    - ylabel: str, label for the y-axis.
     """
     # Load the dataset
     data = pd.read_excel(file_path)
     
-    # Calculate the counts of each category
-    category_counts = data[category_column].value_counts()
-    
-    # Create the pie chart
-    plt.figure(figsize=(8, 8))
-    plt.pie(category_counts, labels=category_counts.index, autopct='%1.1f%%', startangle=140)
+    # Plotting the curve diagram
+    plt.figure(figsize=(10, 6))
+    plt.plot(data[x_column], data[y_column], marker='o', linestyle='-', color='b')
     plt.title(title)
-    plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular.
+    plt.xlabel(xlabel if xlabel else x_column)
+    plt.ylabel(ylabel if ylabel else y_column)
+    plt.grid(True)
+    plt.tight_layout()  # Adjust layout to not cut off labels
     plt.show()
 
     #SCATTERPLOT

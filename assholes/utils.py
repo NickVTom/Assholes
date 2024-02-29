@@ -368,7 +368,7 @@ def create_histogram_with_statistics(file_path, data_column, bins=10, title='', 
 
 
 
-def calculate_probabilities_from_excel(file_path, column, k):
+def cal_probabilities(file_path, column, k):
     import pandas as pd
     """
     Calculate probabilities for a given column in an Excel file.
@@ -402,3 +402,50 @@ def calculate_probabilities_from_excel(file_path, column, k):
         "P(X > k)": p_x_gt_k,
         "P(X ≥ k)": p_x_geq_k
     }
+
+
+def cal_and_create_poisson(lam, max_k, title='Poisson Distribution'):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from scipy.stats import poisson
+    """
+    Calculate probabilities and cumulative probabilities for a Poisson distribution
+    and visualize the PMF and CDF.
+
+    Parameters:
+    - lam: float, the average rate (lambda) of successes in a given time interval.
+    - max_k: int, the maximum value of k to calculate the PMF and CDF for.
+    - title: str, title of the plot.
+    """
+    # k values for which we will calculate the PMF and CDF
+    k_values = np.arange(0, max_k + 1)
+    
+    # Calculate PMF and CDF for each k value
+    pmf_values = poisson.pmf(k_values, lam)
+    cdf_values = poisson.cdf(k_values, lam)
+    
+    # Visualizing the Poisson PMF and CDF
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+    
+    # PMF
+    color = 'tab:blue'
+    ax1.set_xlabel('Number of Events (k)')
+    ax1.set_ylabel('PMF (Probability)', color=color)
+    ax1.stem(k_values, pmf_values, linefmt='b-', markerfmt='bo', basefmt='r-', label='PMF')
+    ax1.tick_params(axis='y', labelcolor=color)
+    
+    # CDF
+    ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+    color = 'tab:red'
+    ax2.set_ylabel('CDF (Cumulative Probability)', color=color)
+    ax2.plot(k_values, cdf_values, color=color, marker='o', linestyle='-', label='CDF')
+    ax2.tick_params(axis='y', labelcolor=color)
+    
+    # Final plot adjustments
+    fig.suptitle(title)
+    fig.tight_layout()  # Adjust layout to not cut off labels
+    plt.grid(True, which='both', axis='x', linestyle='--', linewidth=0.5)
+    plt.show()
+
+    # Optionally, return the calculated PMF and CDF values
+    return pmf_values, cdf_values

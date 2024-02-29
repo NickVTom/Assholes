@@ -291,4 +291,32 @@ def cal_statistics_relationship(file_path, column_x, column_y):
         "trend_line_equation": trend_line_eq
     }
 
+def create_binomial_distribution(n, p, title=''):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    """
+    Calculate and visualize a binomial distribution.
+
+    Parameters:
+    - n: int, number of trials.
+    - p: float, probability of success in each trial.
+    - title: str, title of the plot.
+    """
+    # Calculate binomial distribution
+    x = np.arange(0, n+1)
+    y = np.random.binomial(n, p, size=10000)
+    
+    # Plotting the histogram of the sample
+    plt.figure(figsize=(10, 6))
+    plt.hist(y, bins=x, density=True, alpha=0.7, color='skyblue', edgecolor='black')
+    
+    # Plot details
+    plt.title(title if title else f'Binomial Distribution n={n}, p={p}')
+    plt.xlabel('Number of Successes')
+    plt.ylabel('Probability')
+    plt.xticks(x)
+    plt.grid(axis='y', alpha=0.75)
+    
+    plt.show()
+
 

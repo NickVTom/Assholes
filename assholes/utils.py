@@ -366,3 +366,39 @@ def create_histogram_with_statistics(file_path, data_column, bins=10, title='', 
     plt.tight_layout()
     plt.show()
 
+
+
+def calculate_probabilities_from_excel(file_path, column, k):
+    import pandas as pd
+    """
+    Calculate probabilities for a given column in an Excel file.
+
+    Parameters:
+    - file_path: str, path to the Excel file.
+    - column: str, name of the column to calculate probabilities for.
+    - k: int, the value to calculate probabilities for P(X ≤ k), P(X > k), and P(X ≥ k).
+
+    Returns:
+    - A dictionary containing the calculated probabilities.
+    """
+    # Load the dataset
+    data = pd.read_excel(file_path)
+    
+    # Ensure the column exists
+    if column not in data.columns:
+        raise ValueError(f"Column '{column}' not found in the Excel file.")
+    
+    # Calculate frequencies of each unique value
+    frequencies = data[column].value_counts().to_dict()
+    total_frequency = sum(frequencies.values())
+    
+    # Calculating probabilities
+    p_x_leq_k = sum(freq for outcome, freq in frequencies.items() if outcome <= k) / total_frequency
+    p_x_gt_k = sum(freq for outcome, freq in frequencies.items() if outcome > k) / total_frequency
+    p_x_geq_k = sum(freq for outcome, freq in frequencies.items() if outcome >= k) / total_frequency
+    
+    return {
+        "P(X ≤ k)": p_x_leq_k,
+        "P(X > k)": p_x_gt_k,
+        "P(X ≥ k)": p_x_geq_k
+    }

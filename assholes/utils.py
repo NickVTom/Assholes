@@ -67,54 +67,60 @@ def create_bar(file_path, category_column, value_column, title=''):
 
     #HISTOGRAM
 
-def create_histogram(file_path, data_column, bins=10, title=''):
+def create_histogram(file_path, column, bins=10, title=''):
     import pandas as pd
     import matplotlib.pyplot as plt
     """
-    Create and display a histogram from Excel data.
-    
+    Create and display a histogram from a specified column in an Excel file.
+
     Parameters:
     - file_path: str, path to the Excel file.
-    - data_column: str, name of the column containing the numeric data for the histogram.
+    - column: str, name of the column to create the histogram for.
     - bins: int, number of bins for the histogram.
-    - title: str, title of the histogram.
+    - title: str, optional title for the histogram.
     """
     # Load the dataset
     data = pd.read_excel(file_path)
     
+    # Ensure the column exists
+    if column not in data.columns:
+        raise ValueError(f"Column '{column}' not found in the Excel file.")
+    
     # Plotting the histogram
     plt.figure(figsize=(10, 6))
-    plt.hist(data[data_column], bins=bins, color='skyblue', edgecolor='black')
-    plt.xlabel(data_column)
-    plt.ylabel('Frequency')
+    plt.hist(data[column].dropna(), bins=bins, color='skyblue', edgecolor='black')
     plt.title(title)
-    plt.tight_layout()  # Adjust layout to not cut off labels
+    plt.xlabel(column)
+    plt.ylabel('Frequency')
     plt.show()
 
 
    #CURVEDIAGRAM
-def create_curvediagram(file_path, category_column, title=''):
+def create_curvediagram(file_path, x_column, y_column, title='', xlabel='', ylabel=''):
     import pandas as pd
     import matplotlib.pyplot as plt
     """
-    Create and display a pie chart from Excel data.
+    Create and display a curve diagram (line plot) from Excel data.
 
     Parameters:
     - file_path: str, path to the Excel file.
-    - category_column: str, name of the column containing category labels.
-    - title: str, title of the pie chart.
+    - x_column: str, name of the column to use for x-axis values.
+    - y_column: str, name of the column to use for y-axis values.
+    - title: str, title of the curve diagram.
+    - xlabel: str, label for the x-axis.
+    - ylabel: str, label for the y-axis.
     """
     # Load the dataset
     data = pd.read_excel(file_path)
     
-    # Calculate the counts of each category
-    category_counts = data[category_column].value_counts()
-    
-    # Create the pie chart
-    plt.figure(figsize=(8, 8))
-    plt.pie(category_counts, labels=category_counts.index, autopct='%1.1f%%', startangle=140)
+    # Plotting the curve diagram
+    plt.figure(figsize=(10, 6))
+    plt.plot(data[x_column], data[y_column], marker='o', linestyle='-', color='b')
     plt.title(title)
-    plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular.
+    plt.xlabel(xlabel if xlabel else x_column)
+    plt.ylabel(ylabel if ylabel else y_column)
+    plt.grid(True)
+    plt.tight_layout()  # Adjust layout to not cut off labels
     plt.show()
 
     #SCATTERPLOT
@@ -319,4 +325,44 @@ def create_binomial_distribution(n, p, title=''):
     
     plt.show()
 
+def create_histogram_with_statistics(file_path, data_column, bins=10, title='', show_stats=True):
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import numpy as np
+    """
+    Create and display a histogram from Excel data and optionally plot mode, mean, and median.
+
+    Parameters:
+    - file_path: str, path to the Excel file.
+    - data_column: str, name of the column containing the numeric data for the histogram.
+    - bins: int, number of bins for the histogram.
+    - title: str, title of the histogram.
+    - show_stats: bool, whether to show mode, mean, and median on the histogram.
+    """
+    # Load the dataset
+    data = pd.read_excel(file_path)
+    
+    # Plotting the histogram
+    plt.figure(figsize=(10, 6))
+    plt.hist(data[data_column].dropna(), bins=bins, color='skyblue', edgecolor='black', alpha=0.7)
+    
+    if show_stats:
+        # Calculate statistics
+        stats_results = cal_statistics(file_path, data_column)
+        mean = stats_results['mean']
+        median = stats_results['median']
+        mode = stats_results['mode']
+        
+        # Plotting the mean, median, mode
+        plt.axvline(mean, color='red', linestyle='dashed', linewidth=1, label=f'Mean: {mean:.2f}')
+        plt.axvline(median, color='green', linestyle='dashed', linewidth=1, label=f'Median: {median:.2f}')
+        if mode is not None and not np.isnan(mode):  # Check if mode is valid
+            plt.axvline(mode, color='blue', linestyle='dashed', linewidth=1, label=f'Mode: {mode:.2f}')
+    
+    plt.title(title)
+    plt.xlabel(data_column)
+    plt.ylabel('Frequency')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
 

@@ -354,7 +354,7 @@ def create_histogram_with_statistics(file_path, data_column, bins=10, title='', 
         mode = stats_results['mode']
         
         # Plotting the mean, median, mode
-        plt.axvline(mean, color='red', linestyle='dashed', linewidth=1, label=f'Mean: {mean:.2f}')
+        plt.axvline(mean, color='red', linestyle='dashed', linewidth=2, label=f'Mean: {mean:.2f}')
         plt.axvline(median, color='green', linestyle='dashed', linewidth=1, label=f'Median: {median:.2f}')
         if mode is not None and not np.isnan(mode):  # Check if mode is valid
             plt.axvline(mode, color='blue', linestyle='dashed', linewidth=1, label=f'Mode: {mode:.2f}')

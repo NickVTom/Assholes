@@ -382,7 +382,7 @@ def cal_probabilities(file_path, column, k):
     - A dictionary containing the calculated probabilities.
     """
     # Load the dataset
-    data = pd.read_excel(file_path)
+    data = pd.read_excel(file_path, k )
     
     # Ensure the column exists
     if column not in data.columns:

@@ -82,9 +82,6 @@ def create_histogram(file_path, column, bins=10, title=''):
     # Load the dataset
     data = pd.read_excel(file_path)
     
-    # Ensure the column exists
-    if column not in data.columns:
-        raise ValueError(f"Column '{column}' not found in the Excel file.")
     
     # Plotting the histogram
     plt.figure(figsize=(10, 6))

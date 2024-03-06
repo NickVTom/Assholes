@@ -294,6 +294,34 @@ def cal_statistics_relationship(file_path, column_x, column_y):
         "trend_line_equation": trend_line_eq
     }
 
+def create_binomial_distribution(n, p, title=''):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    """
+    Calculate and visualize a binomial distribution.
+
+    Parameters:
+    - n: int, number of trials.
+    - p: float, probability of success in each trial.
+    - title: str, title of the plot.
+    """
+    # Calculate binomial distribution
+    x = np.arange(0, n+1)
+    y = np.random.binomial(n, p, size=10000)
+    
+    # Plotting the histogram of the sample
+    plt.figure(figsize=(10, 6))
+    plt.hist(y, bins=x, density=True, alpha=0.7, color='skyblue', edgecolor='black')
+    
+    # Plot details
+    plt.title(title if title else f'Binomial Distribution n={n}, p={p}')
+    plt.xlabel('Number of Successes')
+    plt.ylabel('Probability')
+    plt.xticks(x)
+    plt.grid(axis='y', alpha=0.75)
+    
+    plt.show()
+
 def create_histogram_with_statistics(file_path, data_column, bins=10, title='', show_stats=True):
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -323,7 +351,7 @@ def create_histogram_with_statistics(file_path, data_column, bins=10, title='', 
         mode = stats_results['mode']
         
         # Plotting the mean, median, mode
-        plt.axvline(mean, color='red', linestyle='dashed', linewidth=1, label=f'Mean: {mean:.2f}')
+        plt.axvline(mean, color='red', linestyle='dashed', linewidth=2, label=f'Mean: {mean:.2f}')
         plt.axvline(median, color='green', linestyle='dashed', linewidth=1, label=f'Median: {median:.2f}')
         if mode is not None and not np.isnan(mode):  # Check if mode is valid
             plt.axvline(mode, color='blue', linestyle='dashed', linewidth=1, label=f'Mode: {mode:.2f}')
@@ -335,3 +363,86 @@ def create_histogram_with_statistics(file_path, data_column, bins=10, title='', 
     plt.tight_layout()
     plt.show()
 
+
+
+def cal_probabilities(file_path, column, k):
+    import pandas as pd
+    """
+    Calculate probabilities for a given column in an Excel file.
+
+    Parameters:
+    - file_path: str, path to the Excel file.
+    - column: str, name of the column to calculate probabilities for.
+    - k: int, the value to calculate probabilities for P(X ≤ k), P(X > k), and P(X ≥ k).
+
+    Returns:
+    - A dictionary containing the calculated probabilities.
+    """
+    # Load the dataset
+    data = pd.read_excel(file_path, k )
+    
+    # Ensure the column exists
+    if column not in data.columns:
+        raise ValueError(f"Column '{column}' not found in the Excel file.")
+    
+    # Calculate frequencies of each unique value
+    frequencies = data[column].value_counts().to_dict()
+    total_frequency = sum(frequencies.values())
+    
+    # Calculating probabilities
+    p_x_leq_k = sum(freq for outcome, freq in frequencies.items() if outcome <= k) / total_frequency
+    p_x_gt_k = sum(freq for outcome, freq in frequencies.items() if outcome > k) / total_frequency
+    p_x_geq_k = sum(freq for outcome, freq in frequencies.items() if outcome >= k) / total_frequency
+    
+    return {
+        "P(X ≤ k)": p_x_leq_k,
+        "P(X > k)": p_x_gt_k,
+        "P(X ≥ k)": p_x_geq_k
+    }
+
+
+def cal_and_create_poisson(lam, max_k, title='Poisson Distribution'):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from scipy.stats import poisson
+    """
+    Calculate probabilities and cumulative probabilities for a Poisson distribution
+    and visualize the PMF and CDF.
+
+    Parameters:
+    - lam: float, the average rate (lambda) of successes in a given time interval.
+    - max_k: int, the maximum value of k to calculate the PMF and CDF for.
+    - title: str, title of the plot.
+    """
+    # k values for which we will calculate the PMF and CDF
+    k_values = np.arange(0, max_k + 1)
+    
+    # Calculate PMF and CDF for each k value
+    pmf_values = poisson.pmf(k_values, lam)
+    cdf_values = poisson.cdf(k_values, lam)
+    
+    # Visualizing the Poisson PMF and CDF
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+    
+    # PMF
+    color = 'tab:blue'
+    ax1.set_xlabel('Number of Events (k)')
+    ax1.set_ylabel('PMF (Probability)', color=color)
+    ax1.stem(k_values, pmf_values, linefmt='b-', markerfmt='bo', basefmt='r-', label='PMF')
+    ax1.tick_params(axis='y', labelcolor=color)
+    
+    # CDF
+    ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+    color = 'tab:red'
+    ax2.set_ylabel('CDF (Cumulative Probability)', color=color)
+    ax2.plot(k_values, cdf_values, color=color, marker='o', linestyle='-', label='CDF')
+    ax2.tick_params(axis='y', labelcolor=color)
+    
+    # Final plot adjustments
+    fig.suptitle(title)
+    fig.tight_layout()  # Adjust layout to not cut off labels
+    plt.grid(True, which='both', axis='x', linestyle='--', linewidth=0.5)
+    plt.show()
+
+    # Optionally, return the calculated PMF and CDF values
+    return pmf_values, cdf_values
